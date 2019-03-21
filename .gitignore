@@ -124,3 +124,10 @@ gradle-app.setting
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+.idea/codeStyles/
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/modules/
+tork.iml
