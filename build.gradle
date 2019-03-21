@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {   url "https://maven.google.com"   }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+group 'tork'
+version '0.0.1'
+
+sourceSets {
+    main.kotlin.srcDirs = main.java.srcDirs = ['src']
+    test.kotlin.srcDirs = test.java.srcDirs = ['test']
+    main.resources.srcDirs = ['resources']
+    test.resources.srcDirs = ['testresources']
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile group: 'com.github.kittinunf.fuel', name: 'fuel', version: '2.0.1'
+}
