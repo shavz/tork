@@ -73,7 +73,7 @@ fun readString(input: PushbackInputStream): String {
             throw BencodeReaderException("Excpecting a : in string expression")
         }
 
-        for (i in 1..4) {
+        for (i in 1..length) {
             readString = readString.plus(input.safeRead().toString())
         }
     }
