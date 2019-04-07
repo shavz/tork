@@ -62,7 +62,9 @@ fun readInteger(input: PushbackInputStream): Int {
     return integerToReturn
 }
 
-
+/**
+ * Reads a string value encoded in the Bencode format from the incoming stream
+ */
 fun readString(input: PushbackInputStream): String {
     val length = readLengthPart(input)
     var readString = ""
@@ -70,14 +72,13 @@ fun readString(input: PushbackInputStream): String {
     if (length != 0) {
         val colon = input.safeRead().toString()
         if (colon != ":") {
-            throw BencodeReaderException("Excpecting a : in string expression")
+            throw BencodeReaderException("Expecting a : in string expression")
         }
 
         for (i in 1..length) {
             readString = readString.plus(input.safeRead().toString())
         }
     }
-
     return String(readString.toByteArray(), Charsets.UTF_8)
 }
 
@@ -93,12 +94,39 @@ private fun readLengthPart(input: PushbackInputStream): Int {
     return length
 }
 
-fun readDictionary(input: PushbackInputStream) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+fun readDictionary(input: PushbackInputStream): Map<String, String> {
+    val startLetter = input.safeRead().toString();
+    if (startLetter != "l") {
+        throw BencodeReaderException("Start character must be 'l' for input string")
+    }
+
+    val decodedMap = mutableMapOf<String, String>()
+    var readElement = input.safeRead().toString()
+    while (readElement != "e") {
+        val key = readString(input)
+        val value = input.safeRead().toString()
+        decodedMap.put(key, value)
+        readElement = input.safeRead().toString()
+    }
+    return decodedMap
 }
 
-fun readList(input: PushbackInputStream) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+/**
+ * Reads a list of type `Any` from the incoming data stream
+ */
+fun readList(input: PushbackInputStream): List<Any> {
+    val startLetter = input.safeRead().toString();
+    if (startLetter != "l") {
+        throw BencodeReaderException("Start character must be 'l' for input string")
+    }
+
+    val decodedList = mutableListOf<String>()
+    var readElement = input.safeRead().toString()
+    while (readElement != "e") {
+        decodedList.add(readElement)
+        readElement = input.safeRead().toString()
+    }
+    return decodedList
 }
 
 /**
